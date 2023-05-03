@@ -1,5 +1,4 @@
 import * as vscode from 'vscode'
-import convertPath from '@stdlib/utils-convert-path'
 
 export function activate(context: vscode.ExtensionContext) {
     const hide = vscode.commands.registerCommand(
@@ -7,15 +6,20 @@ export function activate(context: vscode.ExtensionContext) {
         (uri: vscode.Uri) => {
             const config = vscode.workspace.getConfiguration()
 
-            const result = uri.path.split(
-                convertPath(
-                    vscode.workspace.workspaceFolders![0].uri.fsPath,
-                    'mixed'
-                )
-            )
+            let result = ''
+
+            const splitPath = uri.path.split('/')
+
+            if (splitPath.length > 1) {
+                result = splitPath[splitPath.length - 1]
+            } else {
+                const newSplitPath = uri.path.split('\\')
+                result = newSplitPath[newSplitPath.length - 1]
+            }
+
             const newExclude = {
                 ...(config.get('files.exclude') || {}),
-                ['**' + result[result.length - 1]]: true,
+                ['**/' + result]: true,
             }
 
             config.update('files.exclude', newExclude, false)
