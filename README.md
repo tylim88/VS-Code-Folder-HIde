@@ -1,15 +1,17 @@
 # Folder-Hide
 
-Folder-Hide is a Visual Studio Code extension that allows you to hide and unhide folders in your workspace using a simple shortcut.
+`Hide Folders and Files` is a Visual Studio Code extension that allows you to hide and unhide folders or files in your workspace using a simple shortcut.
 
-To hide folder, right-click a folder and select `Hide Folder`. Note: Hiding folders using glob patterns may affect the behavior of other extensions or tools that rely on the file structure. Before hiding a folder, consider whether doing so may cause unintended side effects.
+To hide folder or file, right-click a folder or file and select `Hide Folder Or File`.
 
-![Select "Hide Folder" from the right-click menu to hide a folder](https://raw.githubusercontent.com/tylim88/VS-Code-Folder-HIde/main/img/hide.png)
+Reminder: Hiding folders or files using glob patterns may affect the behavior of other extensions or tools that rely on the file structure. Before hiding a folder or file, consider whether doing so may cause unintended side effects.
 
-To unhide folder, right click anywhere in the explorer and select `Unhide Folder`
+![Select "Hide Folder" or "Hide File" from the right-click menu to hide a folder or file](https://raw.githubusercontent.com/tylim88/VS-Code-Folder-HIde/main/img/hide.png)
 
-![Select "Unhide Folder" from the right-click menu to unhide a folder](https://raw.githubusercontent.com/tylim88/VS-Code-Folder-HIde/main/img/unhide.png)
+To unhide folder or file, right click anywhere in the explorer and select `Unhide Folder Or File`.
 
-`Unhide Folder` will open the workspace settings for you to remove the hidden folder glob pattern if you want to unhide a previously hidden folder. This will allow the folder to be displayed in the Explorer view again.
+![Select "Unhide Folder Or File" from the right-click menu to unhide a folder or file](https://raw.githubusercontent.com/tylim88/VS-Code-Folder-HIde/main/img/unhide.png)
 
-![remove hidden folder glob pattern from workspace settings](https://raw.githubusercontent.com/tylim88/VS-Code-Folder-HIde/main/img/settings.png)
+`Unhide Folder Or File` will open the workspace settings for you to remove the hidden folder or file glob pattern if you want to unhide a previously hidden folder or file. This will allow the folder or file to be displayed in the Explorer view again.
+
+![remove hidden folder or file glob pattern from workspace settings](https://raw.githubusercontent.com/tylim88/VS-Code-Folder-HIde/main/img/settings.png)

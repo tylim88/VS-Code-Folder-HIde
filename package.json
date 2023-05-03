@@ -1,12 +1,12 @@
 {
     "name": "folder-hide",
-    "displayName": "Folder Hide",
-    "description": "Shortcut to hide folders",
+    "displayName": "Hide Folders and Files",
+    "description": "Shortcut to hide folders or files",
     "repository": {
         "type": "git",
         "url": "https://github.com/tylim88/VS-Code-Folder-HIde"
     },
-    "version": "0.0.7",
+    "version": "0.0.8",
     "engines": {
         "vscode": "^1.77.0"
     },
@@ -19,7 +19,7 @@
     ],
     "publisher": "tylim88",
     "activationEvents": [],
-    "main": "./dist/extension.js",
+    "main": "./out/extension.js",
     "contributes": {
         "commands": [
             {
@@ -27,14 +27,22 @@
                 "title": "Hide Folder"
             },
             {
+                "command": "file-hide.hide",
+                "title": "Hide File"
+            },
+            {
                 "command": "folder-hide.unhide",
-                "title": "Unhide Folder"
+                "title": "Unhide Folder or File"
             }
         ],
         "menus": {
             "commandPalette": [
                 {
                     "command": "folder-hide.hide",
+                    "when": "false"
+                },
+                {
+                    "command": "file-hide.hide",
                     "when": "false"
                 },
                 {
@@ -46,13 +54,16 @@
                 {
                     "command": "folder-hide.hide",
                     "when": "explorerResourceIsFolder",
-                    "group": "folder-hide",
-                    "title": "Hide Folder"
+                    "group": "folder-hide"
+                },
+                {
+                    "command": "file-hide.hide",
+                    "when": "!explorerResourceIsFolder",
+                    "group": "folder-hide"
                 },
                 {
                     "command": "folder-hide.unhide",
-                    "group": "folder-hide",
-                    "title": "Unhide Folder"
+                    "group": "folder-hide"
                 }
             ]
         }
@@ -64,16 +75,12 @@
         ]
     },
     "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "pretest": "npm run compile && npm run lint",
         "setup": "npx -y husky install && rm -rf node_modules && npm i",
         "lint": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
-        "vscode:prepublish": "npm run package",
-        "compile": "webpack",
-        "watch-web": "webpack --watch",
-        "watch": "tsc -watch -p ./",
-        "package": "webpack --mode production --devtool hidden-source-map",
-        "compile-tests": "tsc -p . --outDir out",
-        "watch-tests": "tsc -p . -w --outDir out",
-        "pretest": "npm run compile-tests && npm run compile && npm run lint",
         "test": "node ./out/test/runTest.js"
     },
     "devDependencies": {
@@ -91,9 +98,6 @@
         "mocha": "^10.2.0",
         "prettier": "^2.8.8",
         "pretty-quick": "^3.1.3",
-        "ts-loader": "^9.4.2",
-        "typescript": "^5.0.4",
-        "webpack": "^5.82.0",
-        "webpack-cli": "^5.0.2"
+        "typescript": "^5.0.4"
     }
 }

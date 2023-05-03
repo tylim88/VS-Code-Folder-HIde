@@ -1,30 +1,29 @@
 import * as vscode from 'vscode'
 
+const hide = (uri: vscode.Uri) => {
+    const config = vscode.workspace.getConfiguration()
+    let result = ''
+
+    const splitPath = uri.path.split('/')
+
+    if (splitPath.length > 1) {
+        result = splitPath[splitPath.length - 1]
+    } else {
+        const newSplitPath = uri.path.split('\\')
+        result = newSplitPath[newSplitPath.length - 1]
+    }
+
+    const newExclude = {
+        ...(config.get('files.exclude') as {}),
+        ['**/' + result]: true,
+    }
+
+    config.update('files.exclude', newExclude, false)
+}
+
 export function activate(context: vscode.ExtensionContext) {
-    const hide = vscode.commands.registerCommand(
-        'folder-hide.hide',
-        (uri: vscode.Uri) => {
-            const config = vscode.workspace.getConfiguration()
-            const path = uri.path
-            let result = ''
-
-            for (let i = path.length - 1; i === 0; i--) {
-                const char = path[i]
-                if (char === '/' || char === '\\') {
-                    break
-                } else {
-                    result += char
-                }
-            }
-
-            const newExclude = {
-                ...(config.get('files.exclude') as {}),
-                ['**/' + result]: true,
-            }
-
-            config.update('files.exclude', newExclude, false)
-        }
-    )
+    const hideFolder = vscode.commands.registerCommand('folder-hide.hide', hide)
+    const hideFile = vscode.commands.registerCommand('file-hide.hide', hide)
 
     const unhide = vscode.commands.registerCommand(
         'folder-hide.unhide',
@@ -36,7 +35,7 @@ export function activate(context: vscode.ExtensionContext) {
         }
     )
 
-    context.subscriptions.push(hide, unhide)
+    context.subscriptions.push(hideFolder, hideFile, unhide)
 }
 
 export function deactivate() {}
