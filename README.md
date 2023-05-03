@@ -10,6 +10,6 @@ To unhide folder, right click anywhere in the explorer and select `Unhide Folder
 
 ![Select "Unhide Folder" from the right-click menu to unhide a folder](https://raw.githubusercontent.com/tylim88/VS-Code-Folder-HIde/main/img/unhide.png)
 
-Use the workspace settings to remove the hidden folder glob pattern if you want to unhide a previously hidden folder. This will allow the folder to be displayed in the Explorer view again.
+`Unhide Folder` will open the workspace settings for you to remove the hidden folder glob pattern if you want to unhide a previously hidden folder. This will allow the folder to be displayed in the Explorer view again.
 
 ![remove hidden folder glob pattern from workspace settings](https://raw.githubusercontent.com/tylim88/VS-Code-Folder-HIde/main/img/settings.png)
