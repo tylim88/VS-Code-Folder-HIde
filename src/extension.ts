@@ -2,15 +2,16 @@ import * as vscode from 'vscode'
 
 const hide = (uri: vscode.Uri) => {
     const config = vscode.workspace.getConfiguration()
+    const path = uri.path
     let result = ''
 
-    const splitPath = uri.path.split('/')
-
-    if (splitPath.length > 1) {
-        result = splitPath[splitPath.length - 1]
-    } else {
-        const newSplitPath = uri.path.split('\\')
-        result = newSplitPath[newSplitPath.length - 1]
+    for (let i = path.length - 1; i > 0; i--) {
+        const char = path[i]
+        if (char === '/' || char === '\\') {
+            break
+        } else {
+            result = char + result
+        }
     }
 
     const newExclude = {
