@@ -2,6 +2,7 @@
     "name": "folder-hide",
     "displayName": "Folder Hide",
     "description": "Shortcut to hide folders",
+    "repository ": "https://github.com/tylim88/VS-Code-Folder-HIde",
     "version": "0.0.1",
     "engines": {
         "vscode": "^1.77.0"
@@ -42,7 +43,6 @@
                 },
                 {
                     "command": "folder-hide.unhide",
-                    "when": "explorerResourceIsFolder",
                     "group": "folder-hide",
                     "title": "Unhide Folder"
                 }
@@ -57,7 +57,7 @@
         ]
     },
     "lint-staged": {
-        "*.{js,jsx,ts,tsx,md,json,yml}": [
+        "*.{js,ts,json}": [
             "eslint --fix",
             "pretty-quick --stage --brach main"
         ]
