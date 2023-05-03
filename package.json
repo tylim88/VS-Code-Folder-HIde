@@ -2,14 +2,22 @@
     "name": "folder-hide",
     "displayName": "Folder Hide",
     "description": "Shortcut to hide folders",
-    "repository ": "https://github.com/tylim88/VS-Code-Folder-HIde",
-    "version": "0.0.1",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/tylim88/VS-Code-Folder-HIde"
+    },
+    "version": "0.0.2",
     "engines": {
         "vscode": "^1.77.0"
     },
+    "author": {
+        "name": "tylim"
+    },
+    "icon": "img/icon.png",
     "categories": [
         "Other"
     ],
+    "publisher": "tylim88",
     "activationEvents": [],
     "main": "./out/extension.js",
     "contributes": {
@@ -47,14 +55,7 @@
                     "title": "Unhide Folder"
                 }
             ]
-        },
-        "themes": [
-            {
-                "label": "Custom Theme",
-                "id": "custom-theme",
-                "path": "./custom-theme.css"
-            }
-        ]
+        }
     },
     "lint-staged": {
         "*.{js,ts,json}": [
