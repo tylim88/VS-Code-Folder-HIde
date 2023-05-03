@@ -63,6 +63,7 @@
         ]
     },
     "scripts": {
+        "setup": "npx -y husky install && rm -rf node_modules && npm i",
         "vscode:prepublish": "npm run compile",
         "compile": "tsc -p ./",
         "watch": "tsc -watch -p ./",
