@@ -8,6 +8,8 @@ To hide folder or file, right-click a folder or file and select `Hide Folder` or
 
 Reminder: Hiding folders or files using glob patterns may affect the behavior of other extensions or tools that rely on the file structure. Before hiding a folder or file, consider whether doing so may cause unintended side effects.
 
+Note: `Everywhere` always has higher priority than `Workspace`.
+
 ![Select "Hide Folder" or "Hide File" from the right-click menu to hide a folder or file](https://raw.githubusercontent.com/tylim88/VS-Code-Folder-HIde/main/img/hide.png)
 
 To unhide folder or file, right click anywhere in the explorer and select `Unhide Folder Or File`.
