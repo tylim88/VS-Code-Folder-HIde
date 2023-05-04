@@ -38,11 +38,6 @@ const hide = (global: boolean) => (uri: vscode.Uri) => {
     let configPath = ''
     let result = ''
 
-    let workspacePath = vscode.workspace.workspaceFolders![0].uri.path
-
-    workspacePath =
-        workspacePath[0] === '/' ? workspacePath.substring(1) : workspacePath
-
     // ! vscode.workspace.getConfiguration() is unreliable
 
     try {
@@ -51,6 +46,13 @@ const hide = (global: boolean) => (uri: vscode.Uri) => {
             config = result.config
             configPath = result.path
         } else {
+            let workspacePath = vscode.workspace.workspaceFolders![0].uri.path
+
+            workspacePath =
+                workspacePath[0] === '/'
+                    ? workspacePath.substring(1)
+                    : workspacePath
+
             configPath = upath.toUnix(
                 upath.join(workspacePath, '.vscode/settings.json')
             )
