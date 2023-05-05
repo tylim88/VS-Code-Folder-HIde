@@ -1,10 +1,8 @@
 # Hide Folders And Files
 
-`Hide Folders and Files` allows you to hide and unhide folders or files globally or in your workspace using a simple shortcut.
+`Hide Folders and Files` allows you to quickly hide and unhide folders or files globally or locally using a simple shortcut.
 
 To hide folder or file, right-click a folder or file and select `Hide Folder` or `Hide File`.
-
-Note: `Everywhere` always has higher priority than `Workspace`.
 
 ![Select "Hide Folder" or "Hide File" from the right-click menu to hide a folder or file](https://raw.githubusercontent.com/tylim88/VS-Code-Folder-HIde/main/img/hide.png)
 

@@ -1,12 +1,12 @@
 {
     "name": "folder-hide",
     "displayName": "Hide Folders and Files",
-    "description": "Shortcut to hide folders or files",
+    "description": "A simple shortcut to hide folders or files, both globally and locally.",
     "repository": {
         "type": "git",
         "url": "https://github.com/tylim88/VS-Code-Folder-HIde"
     },
-    "version": "0.0.17",
+    "version": "0.0.18",
     "engines": {
         "vscode": "^1.77.0"
     },
