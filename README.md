@@ -1,8 +1,6 @@
 # Hide Folders And Files
 
-**Need help to test this on MacOS and Linux**
-
-`Hide Folders and Files` is a Visual Studio Code extension that allows you to hide and unhide folders or files globally or in your workspace using a simple shortcut.
+`Hide Folders and Files` allows you to hide and unhide folders or files globally or in your workspace using a simple shortcut.
 
 To hide folder or file, right-click a folder or file and select `Hide Folder` or `Hide File`.
 
