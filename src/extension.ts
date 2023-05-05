@@ -1,7 +1,7 @@
 import * as vscode from 'vscode'
 import fs from 'fs'
 import upath from 'upath'
-import hjson from 'hjson'
+import hjson from 'json5'
 import os from 'os'
 import open from 'open'
 
