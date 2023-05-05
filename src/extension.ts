@@ -6,15 +6,31 @@ import os from 'os'
 import open from 'open'
 
 const getRelativePath = (uri: vscode.Uri) => {
-    const workspacePath = vscode.workspace.workspaceFolders![0].uri.fsPath
-
-    const fullPath = upath.toUnix(uri.path.substring(uri.path.indexOf(':')))
-    const directoryPath = upath.toUnix(
-        workspacePath.substring(workspacePath.indexOf(':'))
+    const workspacePath = upath.toUnix(
+        vscode.workspace.workspaceFolders![0].uri.fsPath
     )
-    const pathSegments = fullPath.split(directoryPath)
+    const fullPath = upath.toUnix(uri.path)
 
-    const relativePath = pathSegments[pathSegments.length - 1]
+    const length = fullPath
+        .toLowerCase()
+        .substring(fullPath.toLowerCase().indexOf(workspacePath.toLowerCase()))
+        .split(workspacePath.toLowerCase())
+        .join('').length
+
+    const relativePath =
+        length === 0
+            ? ''
+            : fullPath.slice(
+                  -fullPath
+                      .toLowerCase()
+                      .substring(
+                          fullPath
+                              .toLowerCase()
+                              .indexOf(workspacePath.toLowerCase())
+                      )
+                      .split(workspacePath.toLowerCase())
+                      .join('').length
+              )
 
     return relativePath[0] === '/' ? relativePath.substring(1) : relativePath
 }
@@ -58,7 +74,10 @@ const hide = (isGlobal: boolean) => async (uri: vscode.Uri) => {
             splittedRelativeFilePath[splittedRelativeFilePath.length - 1]
         ),
     ]
-    const excludePath = await vscode.window.showQuickPick(pathSelection)
+    const excludePath =
+        relativeFilePath === ''
+            ? '**/'
+            : await vscode.window.showQuickPick(pathSelection)
 
     if (excludePath) {
         try {
