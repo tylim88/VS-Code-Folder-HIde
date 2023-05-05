@@ -8,9 +8,11 @@ import open from 'open'
 const getRelativePath = (uri: vscode.Uri) => {
     const workspacePath = vscode.workspace.workspaceFolders![0].uri.fsPath
 
-    const pathSegments = upath
-        .toUnix(uri.path)
-        .split(upath.toUnix(workspacePath))
+    const fullPath = upath.toUnix(uri.path.substring(uri.path.indexOf(':')))
+    const directoryPath = upath.toUnix(
+        workspacePath.substring(workspacePath.indexOf(':'))
+    )
+    const pathSegments = fullPath.split(directoryPath)
 
     const relativePath = pathSegments[pathSegments.length - 1]
 
@@ -49,7 +51,13 @@ const hide = (isGlobal: boolean) => async (uri: vscode.Uri) => {
 
     let configPath: string | null = null
     const relativeFilePath = getRelativePath(uri)
-    const pathSelection = [relativeFilePath, '**/'.concat(relativeFilePath)]
+    const splittedRelativeFilePath = relativeFilePath.split('/')
+    const pathSelection = [
+        relativeFilePath,
+        '**/'.concat(
+            splittedRelativeFilePath[splittedRelativeFilePath.length - 1]
+        ),
+    ]
     const excludePath = await vscode.window.showQuickPick(pathSelection)
 
     if (excludePath) {
