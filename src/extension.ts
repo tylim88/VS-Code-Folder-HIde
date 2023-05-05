@@ -5,6 +5,18 @@ import parseJson from 'parse-json'
 import os from 'os'
 import open from 'open'
 
+const getRelativePath = (uri: vscode.Uri) => {
+    const workspacePath = vscode.workspace.workspaceFolders![0].uri.fsPath
+
+    const pathSegments = upath
+        .toUnix(uri.path)
+        .split(upath.toUnix(workspacePath))
+
+    const relativePath = pathSegments[pathSegments.length - 1]
+
+    return relativePath[0] === '/' ? relativePath.substring(1) : relativePath
+}
+
 const getGlobalConfig = () => {
     const platform = process.platform
     let globalSettingsPath = ''
@@ -25,87 +37,84 @@ const getGlobalConfig = () => {
         )
     }
     const data = fs.readFileSync(upath.toUnix(globalSettingsPath), 'utf-8')
+
     return {
         config: parseJson(data)['files.exclude'] || {},
-        path: globalSettingsPath,
+        configPath: globalSettingsPath,
     }
 }
 
-const hide = (global: boolean) => (uri: vscode.Uri) => {
+const hide = (isGlobal: boolean) => async (uri: vscode.Uri) => {
     let config: Record<string, unknown> = {}
 
-    const filePath = uri.path
-    let configPath = ''
-    let result = ''
+    let configPath: string | null = null
+    const relativeFilePath = getRelativePath(uri)
+    const pathSelection = [relativeFilePath, '**/'.concat(relativeFilePath)]
+    const excludePath = await vscode.window.showQuickPick(pathSelection)
 
-    // ! vscode.workspace.getConfiguration() is unreliable
+    if (excludePath) {
+        try {
+            if (isGlobal) {
+                // ! vscode.workspace.getConfiguration() is unreliable
 
-    try {
-        if (global) {
-            const result = getGlobalConfig()
-            config = result.config
-            configPath = result.path
-        } else {
-            let workspacePath = vscode.workspace.workspaceFolders![0].uri.path
-
-            workspacePath =
-                workspacePath[0] === '/'
-                    ? workspacePath.substring(1)
-                    : workspacePath
-
-            configPath = upath.toUnix(
-                upath.join(workspacePath, '.vscode/settings.json')
-            )
-            if (fs.existsSync(configPath)) {
-                const data = fs.readFileSync(configPath, 'utf-8')
-                config = parseJson(data)['files.exclude'] || {}
+                const globalConfig = getGlobalConfig()
+                config = globalConfig.config
+                configPath = globalConfig.configPath
             } else {
-                const result = getGlobalConfig()
-                config = result.config
-                configPath = result.path
+                let workspacePath =
+                    vscode.workspace.workspaceFolders![0].uri.path
+
+                workspacePath =
+                    workspacePath[0] === '/'
+                        ? workspacePath.substring(1)
+                        : workspacePath
+
+                configPath = upath.toUnix(
+                    upath.join(workspacePath, '.vscode/settings.json')
+                )
+                if (fs.existsSync(configPath)) {
+                    const data = fs.readFileSync(configPath, 'utf-8')
+                    config = parseJson(data)['files.exclude'] || {}
+                } else {
+                    const globalConfig = getGlobalConfig()
+                    config = globalConfig.config
+                    configPath = globalConfig.configPath
+                }
             }
-        }
-        for (let i = filePath.length - 1; i > 0; i--) {
-            const char = filePath[i]
-            if (char === '/' || char === '\\') {
-                break
+
+            const newExclude = {
+                ...config,
+                [excludePath]: true,
+            }
+
+            vscode.workspace
+                .getConfiguration()
+                .update('files.exclude', newExclude, isGlobal)
+        } catch (e) {
+            if ((e as any)?.name === 'JSONError') {
+                vscode.window.showErrorMessage(
+                    `Please make sure ${configPath} is a valid json file. Example: remove any comment from your json file`,
+                    { modal: true }
+                )
             } else {
-                result = char + result
-            }
-        }
-
-        const newExclude = {
-            ...config,
-            ['**/' + result]: true,
-        }
-
-        vscode.workspace
-            .getConfiguration()
-            .update('files.exclude', newExclude, global)
-    } catch (e) {
-        if ((e as any)?.name === 'JSONError') {
-            vscode.window.showErrorMessage(
-                `Please make sure ${configPath} is a valid json file. Example: remove any comment from your json file`,
-                { modal: true }
-            )
-        } else {
-            const title = 'Report Issue'
-            vscode.window
-                .showErrorMessage(
-                    `Error: Please report the issue on Github.
+                const title = 'Report Issue'
+                vscode.window
+                    .showErrorMessage(
+                        `Error: Please report the issue on Github.
                 
 Error Message:
 ${JSON.stringify(e)}`,
-                    { modal: true },
-                    title
-                )
-                .then((selection) => {
-                    if (selection === title) {
-                        open(
-                            'https://github.com/tylim88/VS-Code-Folder-HIde/issues/new'
-                        )
-                    }
-                })
+                        { modal: true },
+                        title
+                    )
+                    .then((selection) => {
+                        if (selection === title) {
+                            open(
+                                'https://github.com/tylim88/VS-Code-Folder-HIde/issues/new'
+                            )
+                        }
+                    })
+            }
         }
     }
 }

@@ -6,7 +6,7 @@
         "type": "git",
         "url": "https://github.com/tylim88/VS-Code-Folder-HIde"
     },
-    "version": "0.0.16",
+    "version": "0.0.17",
     "engines": {
         "vscode": "^1.77.0"
     },
