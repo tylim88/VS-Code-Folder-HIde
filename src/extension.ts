@@ -1,7 +1,7 @@
 import * as vscode from 'vscode'
 import fs from 'fs'
 import upath from 'upath'
-import parseJson from 'parse-json'
+import hjson from 'hjson'
 import os from 'os'
 import open from 'open'
 
@@ -57,7 +57,7 @@ const getGlobalConfig = () => {
     const data = fs.readFileSync(upath.toUnix(globalSettingsPath), 'utf-8')
 
     return {
-        config: parseJson(data)['files.exclude'] || {},
+        config: hjson.parse(data)['files.exclude'] || {},
         configPath: globalSettingsPath,
     }
 }
@@ -101,7 +101,8 @@ const hide = (isGlobal: boolean) => async (uri: vscode.Uri) => {
                 )
                 if (fs.existsSync(configPath)) {
                     const data = fs.readFileSync(configPath, 'utf-8')
-                    config = parseJson(data)['files.exclude'] || {}
+                    config = hjson.parse(data)['files.exclude'] || {}
+                    console.log({ config })
                 } else {
                     const globalConfig = getGlobalConfig()
                     config = globalConfig.config
@@ -118,30 +119,23 @@ const hide = (isGlobal: boolean) => async (uri: vscode.Uri) => {
                 .getConfiguration()
                 .update('files.exclude', newExclude, isGlobal)
         } catch (e) {
-            if ((e as any)?.name === 'JSONError') {
-                vscode.window.showErrorMessage(
-                    `Please make sure ${configPath} is a valid json file. Example: remove any comment from your json file`,
-                    { modal: true }
-                )
-            } else {
-                const title = 'Report Issue'
-                vscode.window
-                    .showErrorMessage(
-                        `Error: Please report the issue on Github.
+            const title = 'Report Issue'
+            vscode.window
+                .showErrorMessage(
+                    `Error: Please report the issue on Github.
                 
 Error Message:
 ${JSON.stringify(e)}`,
-                        { modal: true },
-                        title
-                    )
-                    .then((selection) => {
-                        if (selection === title) {
-                            open(
-                                'https://github.com/tylim88/VS-Code-Folder-HIde/issues/new'
-                            )
-                        }
-                    })
-            }
+                    { modal: true },
+                    title
+                )
+                .then((selection) => {
+                    if (selection === title) {
+                        open(
+                            'https://github.com/tylim88/VS-Code-Folder-HIde/issues/new'
+                        )
+                    }
+                })
         }
     }
 }
