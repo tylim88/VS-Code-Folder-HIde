@@ -6,33 +6,24 @@ import os from 'os'
 import open from 'open'
 
 const getRelativePath = (uri: vscode.Uri) => {
-    const workspacePath = upath.toUnix(
-        vscode.workspace.workspaceFolders![0].uri.fsPath
-    )
-    const fullPath = upath.toUnix(uri.path)
-
-    const length = fullPath
+    // ! vscode.Uri and vscode.workspace.workspaceFolders![0].uri.fsPath does not return the same format path
+    const workspacePathLowerCase = upath
+        .toUnix(vscode.workspace.workspaceFolders![0].uri.fsPath)
         .toLowerCase()
-        .substring(fullPath.toLowerCase().indexOf(workspacePath.toLowerCase()))
-        .split(workspacePath.toLowerCase())
+    const fullPath = upath.toUnix(uri.path)
+    const fullPathLowerCase = fullPath.toLowerCase()
+
+    const finalSegmentLength = fullPathLowerCase
+        .substring(fullPathLowerCase.indexOf(workspacePathLowerCase))
+        .split(workspacePathLowerCase)
         .join('').length
 
-    const relativePath =
-        length === 0
-            ? ''
-            : fullPath.slice(
-                  -fullPath
-                      .toLowerCase()
-                      .substring(
-                          fullPath
-                              .toLowerCase()
-                              .indexOf(workspacePath.toLowerCase())
-                      )
-                      .split(workspacePath.toLowerCase())
-                      .join('').length
-              )
+    const finalSegmentPath =
+        finalSegmentLength === 0 ? '' : fullPath.slice(-finalSegmentLength)
 
-    return relativePath[0] === '/' ? relativePath.substring(1) : relativePath
+    return finalSegmentPath[0] === '/'
+        ? finalSegmentPath.substring(1)
+        : finalSegmentPath
 }
 
 const getGlobalConfig = () => {
