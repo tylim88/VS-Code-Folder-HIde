@@ -77,8 +77,6 @@ const hide = (isGlobal: boolean) => async (uri: vscode.Uri) => {
     if (excludePath) {
         try {
             if (isGlobal) {
-                // ! vscode.workspace.getConfiguration() is unreliable
-
                 const globalConfig = getGlobalConfig()
                 config = globalConfig.config
                 configPath = globalConfig.configPath
@@ -97,7 +95,6 @@ const hide = (isGlobal: boolean) => async (uri: vscode.Uri) => {
                 if (fs.existsSync(configPath)) {
                     const data = fs.readFileSync(configPath, 'utf-8')
                     config = hjson.parse(data)['files.exclude'] || {}
-                    console.log({ config })
                 } else {
                     const globalConfig = getGlobalConfig()
                     config = globalConfig.config
