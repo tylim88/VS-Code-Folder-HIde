@@ -4,8 +4,9 @@
 
 To hide folder or file, right-click a folder or file and select `Hide Folder` or `Hide File`.
 
-Hide folder/file Everywhere: Add the selected folder/file to User Settings
-Hide folder/file Workspace: Add the selected folder/file to Workspace Settings
+**Hide folder/file Everywhere**: Add the selected folder/file to User Settings
+
+**Hide folder/file Workspace**: Add the selected folder/file to Workspace Settings
 
 Tested on Window. If you are MacOs or Linux user and the extension is not working properly, please open an issue on Github.
 
