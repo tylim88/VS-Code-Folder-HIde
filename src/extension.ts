@@ -29,22 +29,26 @@ const getRelativePath = (uri: vscode.Uri) => {
 const getGlobalConfig = () => {
     const platform = process.platform
     let globalSettingsPath = ''
+
+    const insiderPath = vscode.version.includes('insider') ? ' - Insiders' : ''
+
     if (platform === 'darwin') {
         globalSettingsPath = upath.join(
             os.homedir(),
-            'Library/Application\\ Support/Code/User/settings.json'
+            `Library/Application\\ Support/Code${insiderPath}/User/settings.json`
         )
     } else if (platform === 'win32') {
         globalSettingsPath = upath.join(
             process.env.APPDATA,
-            'Code\\User\\settings.json'
+            `Code${insiderPath}\\User\\settings.json`
         )
     } else if (platform === 'linux') {
         globalSettingsPath = upath.join(
             os.homedir(),
-            '.config/Code/User/settings.json'
+            `.config/Code${insiderPath}/User/settings.json`
         )
     }
+
     const data = fs.readFileSync(upath.toUnix(globalSettingsPath), 'utf-8')
 
     return {
