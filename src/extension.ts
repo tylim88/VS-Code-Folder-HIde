@@ -35,7 +35,7 @@ const getGlobalConfig = () => {
     if (platform === 'darwin') {
         globalSettingsPath = upath.join(
             os.homedir(),
-            `Library/Application\\ Support/Code${insiderPath}/User/settings.json`
+            `Library/Application Support/Code${insiderPath}/User/settings.json`
         )
     } else if (platform === 'win32') {
         globalSettingsPath = upath.join(

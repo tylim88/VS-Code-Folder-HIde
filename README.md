@@ -22,7 +22,7 @@ To unhide folder or file, right click anywhere in the explorer and select `Unhid
 
 ![remove hidden folder or file glob pattern from workspace settings](https://raw.githubusercontent.com/tylim88/VS-Code-Folder-HIde/main/img/settings.png)
 
-Tested on Window. If you are MacOs or Linux user and the extension is not working properly, please open an issue on Github.
+Tested on Window and Mac. If you are Linux user and the extension is not working properly, please open an issue on Github.
 
 Support VS Code Insider.
 
