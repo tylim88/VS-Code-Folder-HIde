@@ -1,6 +1,6 @@
 # Change Log
 
-Undocumented update is Readme update
+Undocumented update are Readme updates
 
 ## 0.2.3
 
